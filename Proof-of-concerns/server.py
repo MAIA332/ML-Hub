@@ -1,5 +1,6 @@
 import asyncio
 from websockets.server import serve
+import json
 
 def getIpAddress():
     import socket
@@ -13,9 +14,17 @@ ipaddress = getIpAddress()
 port = 8765
 
 async def echo(websocket):
+    print(f"New connection from {websocket.remote_address}")
+
     async for message in websocket:
         print("received from {}:{} : ".format(websocket.remote_address[0],websocket.remote_address[1]) + message)
-        await websocket.send(message)
+        
+        if('{' not in message):
+            await websocket.send(message)
+        else:
+            request = json.loads(message)
+                
+            await websocket.send(json.dumps(request))
 
 async def main():
     print("Server is activated on ws://{}:{}".format(ipaddress,port))
