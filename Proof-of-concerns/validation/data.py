@@ -11,7 +11,7 @@ class Files:
         self.instancied = True
         
         self.mapped = {
-            "make_json":self.make_json
+            "from_csv":self.make_json
         }
 
         if funct and args != None: self.mapped[funct](args)
